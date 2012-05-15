@@ -1,0 +1,49 @@
+@import "app/less/bootstrap";
+@import "app/less/responsive";
+
+// Set the correct sprite paths
+//@iconSpritePath: '/images/glyphicons-halflings.png';
+//@iconWhiteSpritePath: '/images/glyphicons-halflings-white.png';
+
+// Your custom LESS stylesheets goes here
+//
+// Since bootstrap was imported above you have access to its mixins which
+// you may use and inherit here
+//
+// If you'd like to override bootstrap's own variables, you can do so here as well
+// See http://twitter.github.com/bootstrap/less.html for their names and documentation
+//
+// Example:
+// @linkColor: #ff0000;
+// @baseFontSize: 20px;
+
+html { height: 100% }
+body { height: 100%; margin: 0; padding: 0 }
+
+#map_canvas img {
+  max-width: none;
+  height: 100%;
+}
+
+.page-header {
+  i {
+    padding-top: 12px;
+  }
+  text-align: center;
+}
+
+.infobox {
+  position:absolute;
+  bottom: 0;
+  width: 40%;
+  right: 25%;
+  z-index: 2000;
+}
+
+.pointpos {
+  text-align: center;
+}
+
+.rebus-form textarea {
+  height: 150px;
+}

@@ -1,80 +1,62 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-    <style type="text/css">
-      html { height: 100% }
-      body { height: 100%; margin: 0; padding: 0 }
-      #map_canvas { height: 100% }
-    </style>
-    <script type="text/javascript"
-      src="http://maps.googleapis.com/maps/api/js?key=AIzaSyD8lXifeli50zA3mHmtIqYdGn2RPbwYtAI&sensor=false">
-    </script>
-    <script type="text/javascript"
-      src="http://code.jquery.com/jquery-latest.min.js">
-    </script>
-    <script type="text/javascript">
-      function initialize() {
-        var myOptions = {
-          center: new google.maps.LatLng(-39.954700469970703, 176.01788520812988),
-          zoom: 8,
-          mapTypeId: google.maps.MapTypeId.SATELLITE
-        };
-
-        var map = new google.maps.Map(document.getElementById("map_canvas"),
-            myOptions);
-
-        $.ajax({
-          type: "GET",
-          url: "gpx",
-          dataType: "xml",
-          success: function(xml) {
-        	var points = [];
-        	var bounds = new google.maps.LatLngBounds ();
-        	$(xml).find("trkpt").each(function() {
-        	  var lat = $(this).attr("lat");
-        	  var lon = $(this).attr("lon");
-        	  var p = new google.maps.LatLng(lat, lon);
-        	  points.push(p);
-            bounds.extend(p);
-
-            var marker = new google.maps.Marker({
-                position: p,
-                map: map
-              });
-
-        	  marker.setMap(map);
-
-            google.maps.event.addListener(marker, "click", function() {
-              var infowindow = new google.maps.InfoWindow({
-                  content: "<img src='/png/128x128/<%= image %>' />"
-                  , position: p
-              });
-              infowindow.open(map);
-              });
-        	});
-
-        	var poly = new google.maps.Polyline({
-        	  // use your own style here
-        	  path: points,
-        	  strokeColor: "#FF00AA",
-        	  strokeOpacity: .7,
-        	  strokeWeight: 4
-        	});
-
-        	poly.setMap(map);
-
-        	// fit bounds to track
-        	map.fitBounds(bounds);
-          }
-        });
-      }
-    </script>
+    <%= css :application, :media => 'screen' %>
+    <%= js  :app %>
+    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyD8lXifeli50zA3mHmtIqYdGn2RPbwYtAI&sensor=false"></script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/ui/jquery-ui-git.js"></script>
+    <script type="text/javascript" src="/js/initmap.js"></script>
   </head>
+
   <body onload="initialize()">
-    <div style="position:absolute; bottom: 50%; right:10px; z-index: 2000; background: whiteSmoke; padding: 5px;">
-      <a href="http://dryicons.com">DryIcons</a>
-    </div>
-    <div id="map_canvas" style="width:100%; height:100%"></div>
-  </body>
+
+    <div class="hero-unit infobox">
+      <form class="form-inline">
+        <h1>Upcoming events</h1>
+        <p>Upcoming rebus contest runs events</p>
+        <table class="table table-striped table-condensed">
+          <thead>
+            <tr>
+              <th>Where</th>
+              <th>Name</th>
+              <th>Starting</th>
+              <th>Rebus #</th>
+              <th>Participants</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>?</td>
+              <td>Australian kickaroo</td>
+              <td>May 12th 2013</td>
+              <td>d</td>
+              <td>3</td>
+            </tr>
+            <tr id="new_rebus_form" style="display:none;">
+              <td>
+                <input type="text" class="input-small" placeholder="Email">
+              </td>
+              <td>
+                <input type="password" class="input-small" placeholder="Password">
+              </td>
+              <td>
+                <button type="submit" class="btn">Sign in</button>
+              </td>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <p>
+        <a class="btn btn-primary btn-large">
+          Add rebus contest
+        </a>
+      </p>
+    </form>
+  </div>
+
+  <div id="map_canvas" style="width:100%; height:100%"></div>
+
+</body>
 </html>
