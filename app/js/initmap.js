@@ -68,9 +68,8 @@ function placeMarker(m, location) {
 }
 
 function mama(id, range) {
-  console.log(routePoints);
-//  var circle = routePoints[id][1];
-//  circle.setRadius(100);
+  var circle = routePoints[id][1];
+  circle.setRadius(parseInt(range));
 }
 
 // Removes the overlays from the map, but keeps them in the array
