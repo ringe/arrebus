@@ -39,8 +39,6 @@ class App < Sinatra::Base
     ]
 
     css_compression :less       # Optional
-
-    prebuild true
   }
 
 end
