@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 require 'sinatra/base'
+require 'less'
 require 'sinatra/assetpack'
 require 'sinatra/activerecord'
 
