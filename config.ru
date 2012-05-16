@@ -1,9 +1,10 @@
 require 'sinatra'
+require 'sinatra/base'
+require 'sinatra/assetpack'
+require 'sinatra/activerecord'
+require './app'
 
-set :env,  :production
+set :env, ENV['RACK_ENV']
 disable :run
 
-require './app.rb'
-
 run App
-
