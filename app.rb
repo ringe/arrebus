@@ -45,9 +45,9 @@ class App < Sinatra::Base
 
 end
 ActiveRecord::Base.establish_connection(
-  adapter: "sqlite3",
-  database: "db/development.sqlite3",
-  timeout: 5000
+  :adapter => "sqlite3",
+  :database => "db/development.sqlite3",
+  :timeout => 5000
 )
 
 class Point < ActiveRecord::Base
