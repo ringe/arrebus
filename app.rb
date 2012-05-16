@@ -3,7 +3,6 @@ require 'sinatra/base'
 require 'sinatra/assetpack'
 require 'sinatra/activerecord'
 
-
 class App < Sinatra::Base
   set :root, File.dirname(__FILE__)
   register Sinatra::AssetPack
@@ -13,7 +12,9 @@ class App < Sinatra::Base
   end
 
   get "/newpoint/:location" do
-    erb :newpoint, :locals  => { :image => "image.png", :location => JSON.parse(params[:location]), :pos => 1 }
+    p = Point.create(lat: params[:location]["lat"], lng: params[:location]["lng"], order: 1)
+    logger.info p.errors.to_json
+    erb :newpoint, :locals  => { :point => p }
   end
 
   get "/gpx" do
@@ -46,3 +47,9 @@ ActiveRecord::Base.establish_connection(
   database: "db/development.sqlite3",
   timeout: 5000
 )
+
+class Point < ActiveRecord::Base
+  validates_presence_of :lat
+  validates_presence_of :lng
+  validates_presence_of :order
+end
