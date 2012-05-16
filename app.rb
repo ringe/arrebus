@@ -12,7 +12,7 @@ class App < Sinatra::Base
   end
 
   get "/newpoint/:location" do
-    p = Point.create(lat: params[:location]["lat"], lng: params[:location]["lng"], order: 1)
+    p = Point.create(:lat => params[:location]["lat"], :lng => params[:location]["lng"], :order => 1)
     logger.info p.errors.to_json
     erb :newpoint, :locals  => { :point => p }
   end
