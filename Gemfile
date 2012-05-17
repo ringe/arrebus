@@ -15,7 +15,3 @@ group :development do
   gem "sqlite3"
   gem "ruby-debug-base19x"
 end
-
-group :production do
-  gem "mysql2"
-end
