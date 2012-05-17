@@ -5,22 +5,11 @@ require 'sinatra/activerecord'
 require 'sanitize'
 #require 'ruby-debug/debugger'
 
-if ENV['RACK_ENV'] == 'development'
-  ActiveRecord::Base.establish_connection(
-    :adapter => "sqlite3",
-    :database => "db/development.sqlite3",
-    :timeout => 5000
-  ) 
-else
-  ActiveRecord::Base.establish_connection(
-    :adapter => mysql2,
-    :encoding => utf8,
-    :reconnect => false,
-    :database => qtrack_development,
-    :username => root,
-    :password => 'Tvaini0'
-  ) 
-end
+ActiveRecord::Base.establish_connection(
+  :adapter => "sqlite3",
+  :database => "db/development.sqlite3",
+  :timeout => 5000
+)
 
 class App < Sinatra::Base
   set :root, File.dirname(__FILE__)
@@ -48,7 +37,7 @@ class App < Sinatra::Base
   end
 
   get "/contests" do
-    { :contests => Contest.all }.to_json
+    Contest.all.to_json
   end
 
   get "/contests/:id" do
