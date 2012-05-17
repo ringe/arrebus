@@ -17,5 +17,5 @@ production:
   adapter: mysql
   database: byliv
   username: byliv
-  password: 3pl3k4k3
+  password: byliv
   host: localhost
