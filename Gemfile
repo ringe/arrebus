@@ -11,7 +11,5 @@ gem "therubyracer"
 gem "sinatra-assetpack"
 gem "sanitize"
 
-group :development do
   gem "sqlite3"
-  gem "ruby-debug-base19x"
-end
+#  gem "ruby-debug-base19x"
