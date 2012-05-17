@@ -6,9 +6,16 @@ gem "sinatra"
 gem "unicorn"
 gem "activerecord"
 gem "sinatra-activerecord"
-gem "sqlite3"
 gem "less"
 gem "therubyracer"
 gem "sinatra-assetpack"
 gem "sanitize"
-#gem "ruby-debug-base19x"
+
+group :development do
+  gem "sqlite3"
+  gem "ruby-debug-base19x"
+end
+
+group :production do
+  gem "mysql2"
+end

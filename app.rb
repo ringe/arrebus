@@ -5,6 +5,23 @@ require 'sinatra/activerecord'
 require 'sanitize'
 #require 'ruby-debug/debugger'
 
+if ENV['RACK_ENV'] == 'development'
+  ActiveRecord::Base.establish_connection(
+    :adapter => "sqlite3",
+    :database => "db/development.sqlite3",
+    :timeout => 5000
+  ) 
+else
+  ActiveRecord::Base.establish_connection(
+    :adapter => mysql2,
+    :encoding => utf8,
+    :reconnect => false,
+    :database => qtrack_development,
+    :username => root,
+    :password => 'Tvaini0'
+  ) 
+end
+
 class App < Sinatra::Base
   set :root, File.dirname(__FILE__)
   use Rack::Session::Pool
@@ -34,6 +51,11 @@ class App < Sinatra::Base
     { :contests => Contest.all }.to_json
   end
 
+  get "/contests/:id" do
+    c = Contest.find(params[:id])
+    { :contest => c, :start => c.points.first }.to_json
+  end
+
   # Save point with given temporary id to session
   post "/points/:id" do
     p = session[:contest].points.select {|p| p.temp_id == params[:id].to_i }.first
@@ -45,9 +67,9 @@ class App < Sinatra::Base
 
   # Render point form for point with given temporary id
   get "/points/:id" do
-    p = session[:contest].points.select {|p| p.temp_id == params[:id].to_i }.first
-    erb :newpoint,
-        :locals => { :point => p }
+    p = session[:contest].points.select {|p| p.temp_id == params[:id].to_i }.first rescue nil
+    redirect "/404" unless p
+    erb :newpoint, :locals => { :point => p }
   end
 
   # Add new point at given location to the current contest, return point form
@@ -97,11 +119,6 @@ class App < Sinatra::Base
   }
 
 end
-ActiveRecord::Base.establish_connection(
-  :adapter => "sqlite3",
-  :database => "db/development.sqlite3",
-  :timeout => 5000
-)
 
 class Point < ActiveRecord::Base
   belongs_to :contest
