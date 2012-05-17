@@ -23,10 +23,15 @@ class App < Sinatra::Base
   end
 
   post "/save" do
-#    puts params
+    params[:contest]["start"] = DateTime.strptime(params[:contest]["start"], "%m/%d/%Y %H:%M")
+    params[:contest]["end"] = DateTime.strptime(params[:contest]["end"], "%m/%d/%Y %H:%M")
     session[:contest].attributes = params[:contest]
     session[:contest].save
     session[:contest].attributes.to_json
+  end
+
+  get "/contests" do
+    { :contests => Contest.all }.to_json
   end
 
   # Save point with given temporary id to session

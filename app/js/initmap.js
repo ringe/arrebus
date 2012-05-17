@@ -17,7 +17,7 @@ function initialize() {
 }
 
 function prepStartPicker() {
-  $('#rebus_end').datepicker({
+  $('#contest_end').datepicker({
       duration: ''
     , showTime: true
     , constrainInput: false
@@ -26,7 +26,7 @@ function prepStartPicker() {
     , altTimeField: ''
     , time24h: true
   });
-  $('#rebus_start').datepicker({
+  $('#contest_start').datepicker({
       duration: ''
     , showTime: true
     , constrainInput: false
@@ -56,8 +56,8 @@ function setRebus(location) {
   geocoder.geocode({ 'latLng': location  }, function(results, status) {
       if (status == google.maps.GeocoderStatus.OK) {
           name = results[1].address_components[0].long_name;
-          $("#rebus_location").val(name);
-          $("#rebus_name").val(name + " Rebus Run");
+          $("#contest_location").val(name);
+          $("#contest_name").val(name + " Rebus Run");
           $("label.private").show();
           $("#hideAll").show();
 
@@ -86,7 +86,7 @@ function placeMarker(location) {
       url: pointPath(location),
       success: function(html) {
         id = $(html).filter('form').attr('id').slice(6);
-        $("#rebus_count").val(id);
+        $("#contest_count").val(id);
 
         hidePrevious(id);
 
@@ -208,9 +208,7 @@ function setPoint(id) {
     , range: ths.find("input.range").val()
     }
   }
-  $.post("/points/"+id, newpoint, function(data) {
-    console.log(data);
-  });
+  $.post("/points/"+id, newpoint);
 }
 
 function getPoint(id) {
@@ -232,12 +230,25 @@ function saveContest() {
   else {
     toggleAllInfo(true); // Make sure all points are open
     toggleAllInfo(false); // Close and save all points
-    console.log($("form#new_contest_form"));
-    console.log($("form#new_contest_form").serialize());
-    $.post("/save", $("form#new_contest_form").serialize(), function(data) {
-      console.log(data);
-      window.history.pushState('Object', 'Title', '/new-url');
-    });
+    f = $("form#new_contest_form");
+    contest = {
+        name: f.find("#contest_name").val()
+      , location: f.find("#contest_location").val()
+      , start: f.find("#contest_start").val()
+      , end: f.find("#contest_end").val()
+    }
+
+    // If empty values in any field
+    if ($.inArray("", [contest.end, contest,name, contest.location, contest.start]) == 0) {
+      $('.alert-error').html("<b>Error!</b> You have to fill in all fields before you can save.");
+      $('.alert-error').show();
+    } else {
+      $('.alert-error').hide();
+      $.post("/save", { contest: contest }, function(data) {
+        console.log(data);
+        window.history.pushState('Object', 'Title', '/new-url');
+      });
+    }
   }
 }
 
