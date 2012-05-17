@@ -3,7 +3,7 @@ require 'sinatra/base'
 require 'sinatra/assetpack'
 require 'sinatra/activerecord'
 require 'sanitize'
-require 'ruby-debug/debugger'
+#require 'ruby-debug/debugger'
 
 class App < Sinatra::Base
   set :root, File.dirname(__FILE__)
@@ -23,7 +23,7 @@ class App < Sinatra::Base
   end
 
   post "/save" do
-    puts params
+#    puts params
     session[:contest].attributes = params[:contest]
     session[:contest].save
     session[:contest].attributes.to_json
