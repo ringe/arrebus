@@ -4,10 +4,11 @@ class CreatePoints < ActiveRecord::Migration
       t.integer :order
       t.float :lng
       t.float :lat
+      t.float :range
       t.text :rebus
       t.string :image
 
-      t.integer :rebus_id
+      t.integer :contest_id
     end
   end
 end

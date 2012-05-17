@@ -1,0 +1,20 @@
+New rebus form
+** date and time for start
+** timeout
+** points (rebuses) count
+** check open 
+- invited only
+
+New point form
+** lat/lng **
+** radius
+** rebus **
+** order **
+** close
+** open
+
+Cleanup
+- uncomment anti leave thing
+
+TEll
+- no change order without show all

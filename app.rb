@@ -2,19 +2,69 @@
 require 'sinatra/base'
 require 'sinatra/assetpack'
 require 'sinatra/activerecord'
+require 'sanitize'
+require 'ruby-debug/debugger'
 
 class App < Sinatra::Base
   set :root, File.dirname(__FILE__)
+  use Rack::Session::Pool
   register Sinatra::AssetPack
 
+  # Create new contest in session and render index page
   get "/" do
-    erb :index
+    session[:contest] = Contest.new
+    erb :index, :locals => { :contests => Contest.all }
   end
 
-  get "/newpoint/:location" do
-    p = Point.create(:lat => params[:location]["lat"], :lng => params[:location]["lng"], :order => 1)
-    logger.info p.errors.to_json
-    erb :newpoint, :locals  => { :point => p }
+  # Create new contest in session
+  get "/new" do
+    session[:contest] = Contest.new
+    nil
+  end
+
+  post "/save" do
+    puts params
+    session[:contest].attributes = params[:contest]
+    session[:contest].save
+    session[:contest].attributes.to_json
+  end
+
+  # Save point with given temporary id to session
+  post "/points/:id" do
+    p = session[:contest].points.select {|p| p.temp_id == params[:id].to_i }.first
+    params["point"]["rebus"] = Sanitize.clean(params["point"]["rebus"])
+    p.attributes = params["point"]
+#    puts p.attributes
+    nil
+  end
+
+  # Render point form for point with given temporary id
+  get "/points/:id" do
+    p = session[:contest].points.select {|p| p.temp_id == params[:id].to_i }.first
+    erb :newpoint,
+        :locals => { :point => p }
+  end
+
+  # Add new point at given location to the current contest, return point form
+  get "/points/new/:location" do
+    session[:contest] ||= Contest.new
+    loc = JSON.parse(params[:location])
+    order = session[:contest].points.size + 1
+
+    p = Point.new :lat => loc["lat"],
+                  :lng => loc["lng"],
+                  :order => order,
+                  :temp_id => order
+
+#    puts p.attributes
+    session[:contest].points << p
+#    puts session[:contest].points.first.attributes
+    erb :newpoint,
+        :locals => { :point => p }
+  end
+
+  post "points/:location" do
+    logger.info params
   end
 
   get "/gpx" do
@@ -49,7 +99,28 @@ ActiveRecord::Base.establish_connection(
 )
 
 class Point < ActiveRecord::Base
+  belongs_to :contest
+
+  attr_accessor :temp_id
+
+  def id
+    self[:id].nil? ? @temp_id : self[:id]
+  end
+
+  attr_accessible :lat, :lng, :order, :temp_id, :rebus, :range
+
   validates_presence_of :lat
   validates_presence_of :lng
   validates_presence_of :order
+end
+
+class Contest < ActiveRecord::Base
+  has_many :points
+  has_many :users
+
+  attr_accessible :name, :location, :start, :end
+end
+
+class User < ActiveRecord::Base
+  belongs_to :contest
 end

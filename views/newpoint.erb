@@ -1,18 +1,22 @@
-<form class="rebus-form" id="rebus-<%= point.id %>">
+<form class="rebus-form rebus-no-<%= point.order %>" id="rebus-<%= point.order %>">
 
   <div class="page-header">
     <h1>
-      Rebus
-      <i class="icon-left-bold"></i> <%= point.order %> <i class="icon-right-bold"></i>
+      <a href="#" onclick="switchPos(<%= point.order %>, -1);">
+        <i class="icon-left-bold"></i>
+      </a>
+      <span class="order"><%= point.order %></span>
+      <a href="#" onclick="switchPos(<%= point.order %>, 1);">
+        <i class="icon-right-bold"></i>
+      </a>
     </h1>
     <p class="form-inline pointpos">
       <label>Proximity range</label>
-      <input id="pointrange-<%= point.id %>" class="span2" type="range"  min="0" max="100" onchange="mama(<%= point.id %>, $(this).val());" />
+      <input class="span2 range" type="range"  min="0" max="100" onchange="changeRadius(<%= point.order %>, $(this).val());" value="<%= point.range %>" />
     </p>
   </div>
 
-  <textarea class="span3" placeholder="Write a rebus here that gives the participant an idea of where to go.">
-  </textarea>
+  <textarea class="span3" placeholder="Write a rebus here that gives the participant an idea of where to go."><%= point.rebus %></textarea>
 
   <div class="form-inline pointpos">
     <label>Latitude</label>
