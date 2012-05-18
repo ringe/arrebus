@@ -108,7 +108,9 @@ class App < Sinatra::Base
     ]
 
     css :application, '/css/application.less', [
-      '/css/screen.css',
+      '/css/screen.css'
+    ]
+    css :fontello, '/css/fontello.css', [
       '/css/fontello.css'
     ]
 
