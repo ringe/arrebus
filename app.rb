@@ -3,6 +3,7 @@ require 'sinatra/base'
 require 'sinatra/assetpack'
 require 'sinatra/activerecord'
 require 'sanitize'
+require 'rufus/mnemo'
 #require 'ruby-debug/debugger'
 
 # What database to use if we're on our hosting, or local
@@ -47,7 +48,7 @@ class App < Sinatra::Base
   end
 
   # Return all contests as a JSON object
-  get "/contests" do
+  get "/contests.json" do
     content_type :json
     ca = { "contests" => [] }
     Contest.all.each do |c|
@@ -55,6 +56,11 @@ class App < Sinatra::Base
     end
     puts ca
     ca.to_json
+  end
+
+  get "/contests" do
+    session[:contest] = Contest.new
+    erb :contests, :locals => { :contests => Contest.all }
   end
 
   # Return the contest with the requested id, including the first point, as JSON
@@ -94,6 +100,11 @@ class App < Sinatra::Base
     erb :newpoint, :locals => { :point => p }
   end
 
+  # Register a new User
+  get "/register" do
+    session[:user] ||= User.create.url
+  end
+
   # TODO: Not in use
   get "/gpx" do
     File.read("Rangiwahia-Triangle-Iron.gpx")
@@ -131,9 +142,9 @@ class Point < ActiveRecord::Base
 
   attr_accessible :lat, :lng, :order, :temp_id, :rebus, :range
 
-  validates_presence_of :lat
-  validates_presence_of :lng
-  validates_presence_of :order
+  validates :lat, :presence => true
+  validates :lng, :presence => true
+  validates :order, :presence => true
 end
 
 # The Contest class represents a geographical rebus contest
@@ -147,4 +158,10 @@ end
 # The User class represents someone partaking in a Contest
 class User < ActiveRecord::Base
   belongs_to :contest
+
+  before_validation do |u|
+    u.url = Rufus::Mnemo::from_integer rand(8**5)
+  end
+
+  validates :url, :presence => true
 end

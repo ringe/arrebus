@@ -10,6 +10,6 @@ gem "less"
 gem "therubyracer"
 gem "sinatra-assetpack"
 gem "sanitize"
-
-  gem "sqlite3"
+gem "rufus-mnemo"
+gem "sqlite3"
 #  gem "ruby-debug-base19x"
