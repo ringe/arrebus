@@ -134,8 +134,10 @@ function placeMarker(location) {
 }
 
 function closeWindow(id) {
-  setPoint(id); // save point before close
-  routePoints[id][2].close();
+  if (routePoints[id][2].map == null); else {
+    setPoint(id); // save point before close
+    routePoints[id][2].close();
+  }
 }
 
 function openWindow(id) {
@@ -153,7 +155,7 @@ function toggleInfo(id) {
 
 function toggleAllInfo(open) {
   $.each(routePoints, function(id, point) {
-    if (open) point[2].open(map, point[0]);
+    if (open) openWindow(id);
     else closeWindow(id);
   });
   $("#hideAll").toggle();
@@ -246,7 +248,6 @@ function saveContest() {
       $('.alert-error').hide();
       $.post("/save", { contest: contest }, function(data) {
         console.log(data);
-        window.history.pushState('Object', 'Title', '/new-url');
       });
     }
   }
@@ -309,3 +310,11 @@ function loadGPX() {
     }
   });
 }
+
+Object.size = function(obj) {
+    var size = 0, key;
+    for (key in obj) {
+        if (obj.hasOwnProperty(key)) size++;
+    }
+    return size;
+};

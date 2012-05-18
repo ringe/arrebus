@@ -44,6 +44,7 @@ class App < Sinatra::Base
     params[:contest]["end"] = DateTime.strptime(params[:contest]["end"], "%m/%d/%Y %H:%M")
     session[:contest].attributes = params[:contest]
     session[:contest].save
+    session[:contest].points.each {|p| p.save}
     session[:contest].attributes.to_json
   end
 
@@ -82,6 +83,7 @@ class App < Sinatra::Base
     p = session[:contest].points.select {|p| p.temp_id == params[:id].to_i }.first
     params["point"]["rebus"] = Sanitize.clean(params["point"]["rebus"])
     p.attributes = params["point"]
+    puts p.attributes
     nil
   end
 
