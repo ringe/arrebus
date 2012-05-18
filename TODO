@@ -14,11 +14,12 @@ New point form
 ** open
 
 User activity
-- register on open android app
-- show list of contests
+** register on open android app
+** show list of contests
 - select contest
 - get rebus
 - alarm on contest
+** keep track of solved rebuses in android app
 
 Cleanup
 - uncomment anti leave thing

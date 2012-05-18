@@ -67,7 +67,7 @@ class App < Sinatra::Base
   get "/contests/:id" do
     content_type :json
     c = Contest.find(params[:id])
-    { :contest => c, :start => c.points.first }.to_json
+    { :contest => c.points.first }.to_json
   end
 
   # Render point form for point with given temporary id
@@ -159,6 +159,7 @@ end
 class User < ActiveRecord::Base
   belongs_to :contest
 
+  # Create a funny user name
   before_validation do |u|
     u.url = Rufus::Mnemo::from_integer rand(8**5)
   end
