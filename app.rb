@@ -5,9 +5,11 @@ require 'sinatra/activerecord'
 require 'sanitize'
 #require 'ruby-debug/debugger'
 
+db = ENV['OPENSHIFT_DATA_DIR'] ? File.join(ENV['OPENSHIFT_DATA_DIR'], "rebus.sqlite3") : "db/development.sqlite3"
+
 ActiveRecord::Base.establish_connection(
   :adapter => "sqlite3",
-  :database => "db/development.sqlite3",
+  :database => db,
   :timeout => 5000
 )
 
