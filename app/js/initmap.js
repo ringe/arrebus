@@ -11,9 +11,9 @@ function initialize() {
   }
   prepStartPicker();
 
-//  window.onbeforeunload = function() {
-//    return "Leaving the page will result in losing all changes!";
-//  }
+  window.onbeforeunload = function() {
+    return "Leaving the page will result in losing all changes!";
+  }
 }
 
 function prepStartPicker() {

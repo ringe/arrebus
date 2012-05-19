@@ -1,3 +1,27 @@
+FEATURES
+- create new contest with rebuses bound to lat/lng
+- auto-register from android phone
+- partake in last contest, first rebus
+- see all contests from android app
+- sqlite storage
+- web API in android app
+- proximityalarm for rebus points
+- etc.
+
+ISSUES WEB
+- no change of order without show those you want to change
+- new rebus is buggy
+
+ISSUES ANDROID
+- proximity alarm isn't exactly precise
+- you only get the first rebus (which you should, of course)
+- you cannot choose contest
+- no alarm for contest timeout
+- no alarm for next contest (besides you only get the last contest anyway)
+
+
+PROGRESS BELOW
+
 New rebus form
 ** date and time for start
 ** timeout
@@ -24,12 +48,8 @@ User activity
 ** connect user to contest
 
 Android
-- proximity alarm
+** proximity alarm
 - alarm on contest
 
 Cleanup
-- uncomment anti leave thing
-
-Tell
-- no change order without show all
-- new rebus is buggy
+- remove GPX file
