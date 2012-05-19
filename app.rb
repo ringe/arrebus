@@ -68,10 +68,7 @@ class App < Sinatra::Base
   get "/contests/:id" do
     content_type :json
     c = Contest.find(params[:id])
-    a = c.points.first.attributes
-    a["lat"] = a["lat"] * 1000000
-    a["lng"] = a["lng"] * 1000000
-    a.to_json
+    c.points.first.attributes.to_json
   end
 
   # Render point form for point with given temporary id
