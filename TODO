@@ -17,13 +17,19 @@ User activity
 ** register on open android app
 ** show list of contests
 - select contest
-- get rebus
+** get rebus
 - alarm on contest
 ** keep track of solved rebuses in android app
-- prox range SERVER
+** prox range SERVER
+** connect user to contest
+
+Android
+- proximity alarm
+- alarm on contest
 
 Cleanup
 - uncomment anti leave thing
 
-TEll
+Tell
 - no change order without show all
+- new rebus is buggy

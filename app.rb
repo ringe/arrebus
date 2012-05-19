@@ -68,7 +68,10 @@ class App < Sinatra::Base
   get "/contests/:id" do
     content_type :json
     c = Contest.find(params[:id])
-    c.points.first.attributes.to_json
+    a = c.points.first.attributes
+    a["lat"] = a["lat"] * 1000000
+    a["lng"] = a["lng"] * 1000000
+    a.to_json
   end
 
   # Render point form for point with given temporary id
@@ -104,7 +107,7 @@ class App < Sinatra::Base
 
   # Register a new User
   get "/register" do
-    session[:user] ||= User.create.url
+    session[:user] ||= User.create(:contest => Contest.last).url
   end
 
   # TODO: Not in use
